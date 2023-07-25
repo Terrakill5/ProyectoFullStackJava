@@ -1,5 +1,6 @@
 package com.ironman.pharmasales.expose.web;
 
+import com.ironman.pharmasales.aplicattion.services.CategoryService;
 import com.ironman.pharmasales.persistence.entity.Category;
 import com.ironman.pharmasales.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +17,11 @@ import java.util.Locale;
 public class CategoryController {
     @Autowired
     private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
 
     @GetMapping
     ResponseEntity<List<Category>> findAll(){
-        List<Category> categories = (List<Category>) categoryRepository.findAll();
+        List<Category> categories = categoryService.findAll();
         return ResponseEntity.ok(categories);
     }
 
