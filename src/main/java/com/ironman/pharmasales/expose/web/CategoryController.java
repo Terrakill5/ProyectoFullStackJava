@@ -44,5 +44,15 @@ public class CategoryController {
 
         return ResponseEntity.ok(category);
     }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<Category> disabled(@PathVariable("/{id}") Long id) {
+        Category categoryDb = categoryRepository.findById(id).get();
+        categoryDb.setState("E");
+
+        Category category = categoryRepository.save(categoryDb);
+        return ResponseEntity.ok(category);
+
+    }
 }
 
