@@ -27,32 +27,31 @@ public class CategoryController {
 
     @GetMapping("/{id}")
     ResponseEntity<Category> findById(@PathVariable("id") Long id) {
-        Category category = categoryRepository.findById(id).get();
+        Category category = categoryService.findById(id);
 
         return ResponseEntity.ok(category);
     }
 
     @PostMapping
     ResponseEntity<Category> create(@RequestBody Category categoryBody) {
-        Category category = categoryRepository.save(categoryBody);
+        Category category = categoryService.create(categoryBody);
         return ResponseEntity.ok(category);
     }
 
     @PutMapping("/{id}")
     ResponseEntity edit(@PathVariable("/{id}") Long id, @RequestBody Category categoryBody) {
-        categoryBody.setId(id);
 
-        Category category = categoryRepository.save(categoryBody);
+
+        Category category = categoryService.edit(id,categoryBody);
 
         return ResponseEntity.ok(category);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<Category> disabled(@PathVariable("/{id}") Long id) {
-        Category categoryDb = categoryRepository.findById(id).get();
-        categoryDb.setState("E");
+    ResponseEntity<Category> disabled(@PathVariable("id") Long id) {
 
-        Category category = categoryRepository.save(categoryDb);
+
+        Category category = categoryService.disabled(id);
         return ResponseEntity.ok(category);
 
     }

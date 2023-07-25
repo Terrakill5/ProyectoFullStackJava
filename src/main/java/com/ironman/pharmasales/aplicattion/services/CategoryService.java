@@ -8,4 +8,9 @@ public interface CategoryService {
     List<Category> findAll();
 
     Category findById(Long id);
+
+    Category edit(Long id, Category categoryBody);
+    Category create(Category categoryBody);
+    Category disabled(Long id);
+
 }
