@@ -10,7 +10,7 @@ public interface CategoryService {
 
     Category findById(Long id);
 
-    Category edit(Long id, Category categoryBody);
+    Category edit(Long id, CategorySaveDto categoryBody);
     Category create(CategorySaveDto categoryBody);
     Category disabled(Long id);
 

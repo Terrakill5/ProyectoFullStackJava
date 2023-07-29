@@ -2,6 +2,7 @@ package com.ironman.pharmasales.aplicattion.services.impi;
 
 import com.ironman.pharmasales.aplicattion.services.CategoryService;
 import com.ironman.pharmasales.aplicattion.services.DTO.category.CategorySaveDto;
+import com.ironman.pharmasales.aplicattion.services.DTO.category.mapper.CategoryMapper;
 import com.ironman.pharmasales.persistence.entity.Category;
 import com.ironman.pharmasales.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.List;
 @Service
 public class CategoryImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
+    private final CategoryMapper categoryMapper;
 
 
 
@@ -33,19 +35,23 @@ public class CategoryImpl implements CategoryService {
         return category;
     }
 
-    @PutMapping
-    public Category edit(Long id, Category categoryBody) {
-        Category category = categoryRepository.findById(id).get();
+    @Override
+    public Category edit(Long id, CategorySaveDto categoryBody) {
+        Category categoryDb = categoryRepository.findById(id).get();
+        Category categorySave = categoryMapper.toCategory(categoryBody);
+        categorySave.setId(categoryDb.getId());
+        categorySave.setKeyword(categoryDb.getName());
+        categorySave.setState(categoryDb.getState());
+        categorySave.setCreatedAt(categoryDb.getCreatedAt());
+        categorySave.setUpdatedAt(LocalDateTime.now());
+        Category category = categoryRepository.save(categorySave);
         return category;
     }
 
     @PostMapping
     public Category create(CategorySaveDto categoryBody) {
-        Category categorySave = new Category();
-        categorySave.setName(categoryBody.getName());
-        categorySave.setDescription(categoryBody.getDescription());
+        Category categorySave = categoryMapper.toCategory(categoryBody);
         categorySave.setKeyword(categoryBody.getName());
-
         categorySave.setState("A");
         categorySave.setCreatedAt(LocalDateTime.now());
         Category category = categoryRepository.save(categorySave);
