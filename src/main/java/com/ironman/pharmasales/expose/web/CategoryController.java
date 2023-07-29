@@ -1,6 +1,7 @@
 package com.ironman.pharmasales.expose.web;
 
 import com.ironman.pharmasales.aplicattion.services.CategoryService;
+import com.ironman.pharmasales.aplicattion.services.DTO.category.CategorySaveDto;
 import com.ironman.pharmasales.persistence.entity.Category;
 import com.ironman.pharmasales.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    ResponseEntity<Category> create(@RequestBody Category categoryBody) {
+    ResponseEntity<Category> create(@RequestBody CategorySaveDto categoryBody) {
         Category category = categoryService.create(categoryBody);
         return ResponseEntity.ok(category);
     }

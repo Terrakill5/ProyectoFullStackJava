@@ -1,6 +1,7 @@
 package com.ironman.pharmasales.aplicattion.services.impi;
 
 import com.ironman.pharmasales.aplicattion.services.CategoryService;
+import com.ironman.pharmasales.aplicattion.services.DTO.category.CategorySaveDto;
 import com.ironman.pharmasales.persistence.entity.Category;
 import com.ironman.pharmasales.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import java.time.LocalDateTime;
 import java.util.List;
 @RequiredArgsConstructor
 @Service
@@ -38,8 +40,15 @@ public class CategoryImpl implements CategoryService {
     }
 
     @PostMapping
-    public Category create(Category categoryBody) {
-        Category category = categoryRepository.save(categoryBody);
+    public Category create(CategorySaveDto categoryBody) {
+        Category categorySave = new Category();
+        categorySave.setName(categoryBody.getName());
+        categorySave.setDescription(categoryBody.getDescription());
+        categorySave.setKeyword(categoryBody.getName());
+
+        categorySave.setState("A");
+        categorySave.setCreatedAt(LocalDateTime.now());
+        Category category = categoryRepository.save(categorySave);
         return category;
     }
 
