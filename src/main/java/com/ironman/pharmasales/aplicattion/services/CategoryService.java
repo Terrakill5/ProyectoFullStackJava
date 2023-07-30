@@ -1,17 +1,18 @@
 package com.ironman.pharmasales.aplicattion.services;
 
+import com.ironman.pharmasales.aplicattion.services.DTO.category.CategoryDto;
 import com.ironman.pharmasales.aplicattion.services.DTO.category.CategorySaveDto;
 import com.ironman.pharmasales.persistence.entity.Category;
 
 import java.util.List;
 
 public interface CategoryService {
-    List<Category> findAll();
+    List<CategoryDto> findAll();
 
-    Category findById(Long id);
+    CategoryDto findById(Long id);
 
-    Category edit(Long id, CategorySaveDto categoryBody);
-    Category create(CategorySaveDto categoryBody);
-    Category disabled(Long id);
+    CategoryDto edit(Long id, CategorySaveDto categoryBody);
+    CategoryDto create(CategorySaveDto categoryBody);
+    CategoryDto disabled(Long id);
 
 }

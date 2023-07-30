@@ -1,6 +1,7 @@
 package com.ironman.pharmasales.aplicattion.services.impi;
 
 import com.ironman.pharmasales.aplicattion.services.CategoryService;
+import com.ironman.pharmasales.aplicattion.services.DTO.category.CategoryDto;
 import com.ironman.pharmasales.aplicattion.services.DTO.category.CategorySaveDto;
 import com.ironman.pharmasales.aplicattion.services.DTO.category.mapper.CategoryMapper;
 import com.ironman.pharmasales.persistence.entity.Category;
@@ -24,19 +25,21 @@ public class CategoryImpl implements CategoryService {
 
 
     @GetMapping
-    public List<Category> findAll() {
+    public List<CategoryDto> findAll() {
         List<Category> categories =  (List<Category>) categoryRepository.findAll();
-        return categories;
+        List<CategoryDto> categoryDto = categoryMapper.toCategoryDto(categories);
+        return categoryDto;
     }
 
     @GetMapping("/{id}")
-    public Category findById(Long id) {
+    public CategoryDto findById(Long id) {
         Category category = categoryRepository.findById(id).get();
-        return category;
+        CategoryDto categoryDto = categoryMapper.toCategoryDto(category);
+        return categoryDto;
     }
 
     @Override
-    public Category edit(Long id, CategorySaveDto categoryBody) {
+    public CategoryDto edit(Long id, CategorySaveDto categoryBody) {
         Category categoryDb = categoryRepository.findById(id).get();
         Category categorySave = categoryMapper.toCategory(categoryBody);
         categorySave.setId(categoryDb.getId());
