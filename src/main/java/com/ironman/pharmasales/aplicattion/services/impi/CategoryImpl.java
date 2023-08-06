@@ -26,9 +26,11 @@ public class CategoryImpl implements CategoryService {
 
     @GetMapping
     public List<CategoryDto> findAll() {
-        List<Category> categories =  (List<Category>) categoryRepository.findAll();
-        List<CategoryDto> categoryDto = categoryMapper.toCategoryDto(categories);
-        return categoryDto;
+        List<Category> categories = (List<Category>) categoryRepository.findAll();
+
+        List<CategoryDto> categoryDtos = categoryMapper.toCategoryDtos(categories);
+
+        return categoryDtos;
     }
 
     @GetMapping("/{id}")
@@ -48,25 +50,25 @@ public class CategoryImpl implements CategoryService {
         categorySave.setCreatedAt(categoryDb.getCreatedAt());
         categorySave.setUpdatedAt(LocalDateTime.now());
         Category category = categoryRepository.save(categorySave);
-        return category;
+        return categoryMapper.toCategoryDto(category);
     }
 
     @PostMapping
-    public Category create(CategorySaveDto categoryBody) {
+    public CategoryDto create(CategorySaveDto categoryBody) {
         Category categorySave = categoryMapper.toCategory(categoryBody);
         categorySave.setKeyword(categoryBody.getName());
         categorySave.setState("A");
         categorySave.setCreatedAt(LocalDateTime.now());
         Category category = categoryRepository.save(categorySave);
-        return category;
+        return categoryMapper.toCategoryDto(category);
     }
 
-    public Category disabled(Long id) {
+    public CategoryDto disabled(Long id) {
         Category categoryDb = categoryRepository.findById(id).get();
         categoryDb.setState("E");
 
         Category category = categoryRepository.save(categoryDb);
-        return category;
+        return categoryMapper.toCategoryDto(category);
 
     }
 

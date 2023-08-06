@@ -1,29 +1,29 @@
 package com.ironman.pharmasales.expose.web;
 
-import com.ironman.pharmasales.aplicattion.services.CategoryService;
-import com.ironman.pharmasales.aplicattion.services.DTO.category.CategoryDto;
-import com.ironman.pharmasales.aplicattion.services.DTO.category.CategorySaveDto;
-import com.ironman.pharmasales.persistence.entity.Category;
-import com.ironman.pharmasales.repository.CategoryRepository;
+
+import com.ironman.pharmasales.application.dto.category.CategoryDto;
+import com.ironman.pharmasales.application.dto.category.CategorySaveDto;
+import com.ironman.pharmasales.application.dto.category.CategorySimpleDto;
+import com.ironman.pharmasales.application.service.CategoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Locale;
 
 @RequiredArgsConstructor
-@RequestMapping("categories")
+@RequestMapping("/categories")
 @RestController
 public class CategoryController {
-    @Autowired
-    private final CategoryRepository categoryRepository;
+
     private final CategoryService categoryService;
 
     @GetMapping
-    ResponseEntity<List<CategoryDto>> findAll(){
+    ResponseEntity<List<CategoryDto>> findAll() {
         List<CategoryDto> categories = categoryService.findAll();
+
         return ResponseEntity.ok(categories);
     }
 
@@ -35,27 +35,46 @@ public class CategoryController {
     }
 
     @PostMapping
-    ResponseEntity<Category> create(@RequestBody CategorySaveDto categoryBody) {
-        Category category = categoryService.create(categoryBody);
+    ResponseEntity<CategoryDto> create(@RequestBody CategorySaveDto categoryBody) {
+        CategoryDto category = categoryService.create(categoryBody);
+
         return ResponseEntity.ok(category);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity edit(@PathVariable("/{id}") Long id, @RequestBody CategorySaveDto categoryBody) {
-
-
-        Category category = categoryService.edit(id,categoryBody);
+    ResponseEntity<CategoryDto> edit(@PathVariable("id") Long id, @RequestBody CategorySaveDto categoryBody) {
+        CategoryDto category = categoryService.edit(id, categoryBody);
 
         return ResponseEntity.ok(category);
     }
+
 
     @DeleteMapping("/{id}")
-    ResponseEntity<Category> disabled(@PathVariable("id") Long id) {
+    ResponseEntity<CategoryDto> disabled(@PathVariable("id") Long id) {
+        CategoryDto category = categoryService.disbled(id);
 
-
-        Category category = categoryService.disabled(id);
         return ResponseEntity.ok(category);
-
     }
-}
 
+    @GetMapping("/select")
+    ResponseEntity<List<CategorySimpleDto>> select() {
+        List<CategorySimpleDto> categories = categoryService.select();
+
+        return ResponseEntity.ok(categories);
+    }
+
+    @GetMapping("/search-by-state/{state}")
+    ResponseEntity<List<CategorySimpleDto>> searchByState(@PathVariable("state") String state) {
+        List<CategorySimpleDto> categories = categoryService.searchByState(state);
+
+        return ResponseEntity.ok(categories);
+    }
+
+    @GetMapping("/pagination")
+    ResponseEntity<Page<CategoryDto>> pagination(Pageable pageable) {
+        Page<CategoryDto> categoryPage = categoryService.pagination(pageable);
+
+        return ResponseEntity.ok(categoryPage);
+    }
+
+}
